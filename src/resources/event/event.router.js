@@ -35,6 +35,18 @@ router.get('/:id', (req, res, next) => {
         });
 });
 
+// GET events of an specific user
+router.get('/created/:id', (req, res, next) => {
+    Event.find({ created_by: req.params.id })
+        .exec()
+        .then((events) => {
+            res.status(200).json(events);    
+        })
+        .catch((err) => {
+            res.status(500).json({ error: err });
+        });
+});
+
 router.post('/', (req, res, next) => {
     const event = new Event({
         _id: new mongoose.Types.ObjectId(),
@@ -50,6 +62,21 @@ router.post('/', (req, res, next) => {
                 message: 'event created',
                 created: result,
             });
+        })
+        .catch((err) => {
+            res.status(500).json({ error: err });
+        });
+});
+
+router.patch('/:id', (req, res, next) => {
+    Event.findByIdAndUpdate(req.params.id, req.body)
+        .exec()
+        .then((result) => {
+            if(result) {
+                res.status(200).json(result);
+            } else {
+                res.status(404).json({ error: 'no event to update'})
+            }
         })
         .catch((err) => {
             res.status(500).json({ error: err });
