@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 5000;
 
 const databaseConnector = require('./utils/db');
 
+const userRouter = require('./resources/user/user.router');
 const eventRouter = require('./resources/event/event.router');
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use('/api/user', userRouter);
 app.use('/api/event', eventRouter);
 
 app.listen(PORT, () => {
