@@ -94,4 +94,15 @@ router.post('/login', (req, res, next) => {
         });
 });
 
+router.delete('/:id', (req, res, next) => {
+    User.remove({ _id: req.params.id })
+        .exec()
+        .then((result) => {
+            res.status(200).json({ result });
+        })
+        .catch((err) => {
+            res.status(404).json({ error: err });
+        });
+});
+
 module.exports = router;
